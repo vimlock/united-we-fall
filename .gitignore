@@ -5,6 +5,9 @@
 *.pidb.meta
 *.apk
 *.unitypackage
+*.sln
+*.csproj
+*.suo
 /Assets/AssetStoreTools*
 /Library/
 /UnityGenerated/
