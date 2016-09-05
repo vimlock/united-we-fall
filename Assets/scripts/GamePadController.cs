@@ -11,8 +11,11 @@ public class GamePadController : MonoBehaviour
 	public GameObject ukko1;
 	public GameObject ukko2;
 
-	float angleL = 0f;
-	float angleR = 0f;
+	public float angleL = 0f;
+	public float angleR = 0f;
+	public bool deadzoneR = true;
+	public bool deadzoneL = true;
+
 
     // Use this for initialization
     void Start()
@@ -54,23 +57,28 @@ public class GamePadController : MonoBehaviour
             
         }
 
-		if (ukko1) {
-			if (state.ThumbSticks.Left.X < 0) {
+
+		if (state.ThumbSticks.Left.X < 0) {
+			deadzoneL = false;
+		} else {
+			deadzoneL = true;
+		}
+
+		if (state.ThumbSticks.Right.X > 0) {
+			deadzoneR = true;
+		} else {
+			deadzoneR = false;
+		}
+				
 				angleL = Mathf.Atan2 (-state.ThumbSticks.Left.Y, -state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
-				ukko1.transform.rotation = Quaternion.AngleAxis (angleL, Vector3.forward);
-			} 
-		}
-		if (ukko2) {
-			if (state.ThumbSticks.Right.X > 0) {
+				
 				angleR = Mathf.Atan2 (-state.ThumbSticks.Right.Y, -state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
-				ukko2.transform.rotation = Quaternion.AngleAxis (angleR, Vector3.forward);
-			} 
-		}
+
+	
 
 
+	
 
-		Debug.Log (state.ThumbSticks.Left.X + " " + state.ThumbSticks.Left.Y+" "+state.ThumbSticks.Right.X + " " + state.ThumbSticks.Right.Y);
-		Debug.Log(angleL);
 
 
         // Set vibration according to triggers
