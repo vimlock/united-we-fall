@@ -54,27 +54,58 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
         while (timer > spawnRate)
         {
             timer -= spawnRate;
-            Spawn();
+            SpawnOnAll(RandomPrefab());
         }
 	}
 
-    void Spawn()
+    GameObject RandomPrefab()
     {
-        // no prefabs
-        if (spawnPositions.Length == 0 || prefabs.Length == 0)
-        {
+        if (prefabs.Length > 0) {
+            return prefabs[Random.Range(0, prefabs.Length)];
+        }
+        else {
+            return null;
+        }
+    }
+
+    Transform RandomSpawnPoint()
+    {
+        if (spawnPositions.Length > 0) {
+            return spawnPositions[Random.Range(0, spawnPositions.Length)];
+        }
+        else {
+            return null;
+        }
+    }
+
+    // Spawns an enemy for each spawn point
+    void SpawnOnAll(GameObject prefab)
+    {
+        foreach (var sp in spawnPositions) {
+            Spawn(sp, prefab);
+        }
+    }
+
+    // Spawns an enemy to a random spawn point
+    void SpawnRandom(GameObject prefab)
+    {
+        Spawn(RandomSpawnPoint(), prefab);
+    }
+
+    void Spawn(Transform transform, GameObject prefab)
+    {
+        if (transform == null) {
+            Debug.LogError("Spawn() called with null transform");
             return;
         }
 
-        Transform transform = spawnPositions[Random.Range(0, spawnPositions.Length)];
-        GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
-
-        // unassigned prefabs?
-        if (prefab == null || transform == null)
-        {
+        if (prefab == null) {
+            Debug.LogError("Spawn() called with null prefab");
             return;
         }
 
+        // Add a random vertical offset to the spawn position so that every
+        // enemy wont spawn from a same point
         float yOffset = Random.Range(-1.0f, 1.0f) * yRandom;
         Vector3 position = transform.position + new Vector3(0.0f, yOffset, 0.0f);
 
