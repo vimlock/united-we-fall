@@ -9,6 +9,7 @@
 *.csproj
 *.suo
 *.userprefs
+*.swp
 /Assets/AssetStoreTools*
 /Library/
 /UnityGenerated/
