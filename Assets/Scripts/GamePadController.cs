@@ -15,7 +15,12 @@ public class GamePadController : MonoBehaviour
 	public float angleR = 0f;
 	public bool deadzoneR = true;
 	public bool deadzoneL = true;
-
+	public bool triggerL = false;
+	public bool triggerR = false;
+	public bool shoulderL = false;
+	public bool shoulderR = false;
+	public bool stickL = false;
+	public bool stickR = false;
 
     // Use this for initialization
     void Start()
@@ -43,20 +48,31 @@ public class GamePadController : MonoBehaviour
             }
         }
 
+
+
         prevState = state;
         state = GamePad.GetState(playerIndex);
 
-        // Detect if a button was pressed this frame
-        if (prevState.Buttons.A == ButtonState.Released && state.Buttons.A == ButtonState.Pressed)
-        {
-            Debug.Log("A painettu");
-        }
-        // Detect if a button was released this frame
-        if (prevState.Buttons.A == ButtonState.Pressed && state.Buttons.A == ButtonState.Released)
-        {
-            
-        }
 
+		//Controls to boolean variables
+
+		shoulderL = state.Buttons.LeftShoulder.Equals(ButtonState.Pressed);
+		shoulderR = state.Buttons.RightShoulder.Equals(ButtonState.Pressed);
+		if (state.Triggers.Left > 0) {
+			triggerL = true;
+		}else {
+			triggerL = false;
+		}
+
+		if (state.Triggers.Right > 0) {
+			triggerR = true;
+		}else {
+			triggerR = false;
+		}
+			
+		//
+		stickL = state.Buttons.LeftStick.Equals (ButtonState.Pressed);
+		stickR = state.Buttons.RightStick.Equals (ButtonState.Pressed);
 
 		if (state.ThumbSticks.Left.X < 0) {
 			deadzoneL = false;
@@ -78,7 +94,7 @@ public class GamePadController : MonoBehaviour
 
 
 	
-
+		//Debug.Log ("TriggerR: " + triggerR + " TriggerL: " + triggerL + " ShoulderL: " + shoulderL + " ShoulderR: " + shoulderR + " AngleL: " + angleL + " AngleR: " + angleR);
 
 
         // Set vibration according to triggers
