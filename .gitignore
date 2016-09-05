@@ -1,0 +1,12 @@
+*.tmp
+*.user
+*.pidb
+*.svd
+*.pidb.meta
+*.apk
+*.unitypackage
+/Assets/AssetStoreTools*
+/Library/
+/UnityGenerated/
+Obj/
+Temp/
