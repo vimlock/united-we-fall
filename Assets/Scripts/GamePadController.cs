@@ -65,9 +65,9 @@ public class GamePadController : MonoBehaviour
 		}
 
 		if (state.ThumbSticks.Right.X > 0) {
-			deadzoneR = true;
-		} else {
 			deadzoneR = false;
+		} else {
+			deadzoneR = true;
 		}
 				
 				angleL = Mathf.Atan2 (-state.ThumbSticks.Left.Y, -state.ThumbSticks.Left.X) * Mathf.Rad2Deg;

@@ -20,7 +20,7 @@ public class character : MonoBehaviour {
 				transform.rotation = Quaternion.AngleAxis (controller.angleL, Vector3.forward);
 			}
 		} else {
-			if (controller.deadzoneR) {
+			if (!controller.deadzoneR) {
 				transform.rotation = Quaternion.AngleAxis (controller.angleR, Vector3.forward);
 			}
 		}
