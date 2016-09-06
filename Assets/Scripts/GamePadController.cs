@@ -79,7 +79,7 @@ public class GamePadController : IController
 				
 				angleLeft = Mathf.Atan2 (state.ThumbSticks.Left.Y, state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
 				
-				angleRight = Mathf.Atan2 (state.ThumbSticks.Right.Y, state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
+				angleRight = Mathf.Atan2 (-state.ThumbSticks.Right.Y, -state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
 				
 	
 
