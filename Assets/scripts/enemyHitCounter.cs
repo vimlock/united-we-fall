@@ -40,7 +40,7 @@ public class enemyHitCounter : MonoBehaviour {
             
     }
 
-    void OnCollisionEnter(Collision col)
+    void OnCollisionEnter2D(Collision2D col)
     {
         if(type == (bulletType)col.gameObject.GetComponent<bulletScript>().type) // If enemy's "weakness" bullet type is same as player's who shot it
         {

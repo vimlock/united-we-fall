@@ -47,8 +47,8 @@ public class GamePadController : IController
 
 		//Controls to boolean variables
 
-		shoulderL = state.Buttons.LeftShoulder.Equals(ButtonState.Pressed);
-		shoulderR = state.Buttons.RightShoulder.Equals(ButtonState.Pressed);
+		shoulderL = state.Buttons.LeftShoulder.Equals(ButtonState.Pressed) && prevState.Buttons.LeftShoulder.Equals(ButtonState.Released);
+		shoulderR = state.Buttons.RightShoulder.Equals(ButtonState.Pressed)&& prevState.Buttons.RightShoulder.Equals(ButtonState.Released);
 		if (state.Triggers.Left > 0) {
 			triggerL = true;
 		}else {
@@ -77,7 +77,7 @@ public class GamePadController : IController
 			deadzoneR = true;
 		}
 				
-				angleLeft = Mathf.Atan2 (-state.ThumbSticks.Left.Y, -state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
+				angleLeft = Mathf.Atan2 (state.ThumbSticks.Left.Y, state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
 				
 				angleRight = Mathf.Atan2 (-state.ThumbSticks.Right.Y, -state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
 				
@@ -90,6 +90,7 @@ public class GamePadController : IController
 
         // Set vibration according to triggers
         GamePad.SetVibration(playerIndex, state.Triggers.Left, state.Triggers.Right);
+
 
  
     }

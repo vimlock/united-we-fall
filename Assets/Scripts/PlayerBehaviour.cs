@@ -12,8 +12,13 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	public float shootingSpeed = 0.5f;
 
+	public int ammo;
+	public int ammoMax = 50;
 	public float bulletSpeed = 50f;
-    AudioSource audio;
+	public float reloadTime = 2f;
+	float reloadact = 0;
+	bool reloading = false;
+
 	float nextShot = 0f;
 
 	public enum bulletType
@@ -43,7 +48,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Use this for initialization
     void Start ()
     {
-        audio = FindObjectOfType<AudioSource>();
+		ammo = ammoMax;
 		gun = transform.Find ("gun");
 		shotType = bulletType.bullet1;
 		if (id == PlayerId.RIGHT) {
@@ -103,53 +108,85 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	void shoot(PlayerId idv){
-		if (Time.time > nextShot && id == idv) {
+		if (Time.time > nextShot && id == idv && ammo >0) {
 			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,gun.position,gun.rotation) as GameObject;
 			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
 			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
-            audio.Play();
 			nextShot = Time.time + shootingSpeed;
+			ammo--;
+			Debug.Log ("Ammo: " + ammo);
 		}
-
-
+		if (ammo <= 0) {
+			reload (idv);
 		}
+		}
+	void reload(PlayerId idv){
+		if (idv == id) {
+			if (!reloading) {
+				reloadact = Time.time + reloadTime;
+			}
+			reloading = true;
+		}
+	}
 
 	void FixedUpdate(){
 
 		if (shoulderaL) {
-			
+			swapGun ();
+			Debug.Log ("swapped guns!");
 			shoulderaL = false;
 		}
 
 		if (shoulderaR) {
-			Debug.Log ("Painettu shoulderR");
+			swapGun ();
+			Debug.Log ("swapped guns!");
 			shoulderaR = false;
 		}
 
 		if (triggeraL) {
 			shoot (PlayerId.LEFT);
-			Debug.Log ("Painettu triggerL");
+
 			triggeraL = false;
 		}
 
 		if (triggeraR) {
 			shoot (PlayerId.RIGHT);
-			Debug.Log ("Painettu triggerR");
+
 			triggeraR = false;
 		}
 
 		if (stickaL) {
-			Debug.Log ("Painettu StickL");
+			Debug.Log ("Reloading Left");
+			reload (PlayerId.LEFT);
 			stickaL = false;
 		}
 
 		if (stickaR) {
-			Debug.Log ("Painettu StickR");
+			Debug.Log ("Reloading Right");
+			reload (PlayerId.RIGHT);
 			stickaR = false;
+		}
+
+		if (reloading) {
+			if (Time.time > reloadact) {
+				ammo = ammoMax;
+				reloading = false;
+			}
+
 		}
 
 
 	}
+
+	void swapGun(){
+		if (shotType == bulletType.bullet1) {
+			shotType = bulletType.bullet2;
+		} else {
+			shotType = bulletType.bullet1;
+		}
+	}
+
+
 
 
 }
