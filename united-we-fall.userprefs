@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Xinput_controller.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\character.cs">
     <Files>
-      <File FileName="Assets\scripts\Xinput_controller.cs" Line="169" Column="3" />
-      <File FileName="Assets\scripts\TestGamepad.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\GamepadManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\GamePadController.cs" Line="57" Column="34" />
+      <File FileName="Assets\scripts\character.cs" Line="53" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
