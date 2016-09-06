@@ -20,6 +20,8 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
     // Maximum random y offset to the enemy spawn positions
     public float yRandom;
 
+
+
 	// Use this for initialization
 	void Start () {
         if (prefabs.Length == 0)
@@ -109,6 +111,8 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
         float yOffset = Random.Range(-1.0f, 1.0f) * yRandom;
         Vector3 position = transform.position + new Vector3(0.0f, yOffset, 0.0f);
 
-        GameObject.Instantiate(prefab, position, Quaternion.identity);
+		GameObject tmp = Instantiate(prefab, position, Quaternion.identity) as GameObject;
+
+		tmp.GetComponent<enemyHitCounter> ().setType (enemyHitCounter.bulletType.bullet1);
     }
 }

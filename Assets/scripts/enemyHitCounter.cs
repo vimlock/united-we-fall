@@ -53,4 +53,8 @@ public class enemyHitCounter : MonoBehaviour {
             Destroy(col.gameObject);
         }
     }
+
+	public void setType(bulletType tyyppi){
+		type = tyyppi;
+	}
 }
