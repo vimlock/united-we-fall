@@ -20,6 +20,8 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
     // Maximum random y offset to the enemy spawn positions
     public float yRandom;
 
+	public float timer2 = 0;
+	public int stage = 0;
 
 
 	// Use this for initialization
@@ -49,14 +51,39 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
             }
         }
 	}
-	
+	int spawnPositionint = 0;
 	// Update is called once per frame
 	void Update () {
         timer += Time.deltaTime;
-        while (timer > spawnRate)
+		timer2 += Time.deltaTime;
+		while (timer > spawnRate)
         {
             timer -= spawnRate;
-            SpawnOnAll(RandomPrefab());
+		
+
+				if (stage == 0) {
+					//stage 0
+					spawnRate = 1f;
+
+				Spawn (spawnPositions [spawnPositionint], prefabs [0],enemyHitCounter.bulletType.bullet3);
+					if (spawnPositionint == 1) {
+						spawnPositionint = 0;
+					} else {
+						spawnPositionint = 1;
+					}
+				}
+
+				if (stage == 1) {
+
+				}
+
+			if (timer2 > 25f) {
+				timer2 -= 25;
+				stage++;
+
+			}
+
+            
         }
 	}
 
@@ -84,17 +111,17 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
     void SpawnOnAll(GameObject prefab)
     {
         foreach (var sp in spawnPositions) {
-            Spawn(sp, prefab);
+			Spawn(sp, prefab,enemyHitCounter.bulletType.bullet3);
         }
     }
 
     // Spawns an enemy to a random spawn point
     void SpawnRandom(GameObject prefab)
     {
-        Spawn(RandomSpawnPoint(), prefab);
+		Spawn(RandomSpawnPoint(), prefab,enemyHitCounter.bulletType.bullet3);
     }
 
-    void Spawn(Transform transform, GameObject prefab)
+	void Spawn(Transform transform, GameObject prefab,enemyHitCounter.bulletType bullet)
     {
         if (transform == null) {
             Debug.LogError("Spawn() called with null transform");
@@ -113,6 +140,6 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 
 		GameObject tmp = Instantiate(prefab, position, Quaternion.identity) as GameObject;
 
-		tmp.GetComponent<enemyHitCounter> ().setType (enemyHitCounter.bulletType.bullet1);
+		tmp.GetComponent<enemyHitCounter> ().setType (bullet);
     }
 }
