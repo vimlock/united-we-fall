@@ -7,7 +7,8 @@ public class enemyHitCounter : MonoBehaviour {
     public enum bulletType
     {
         bullet1,
-        bullet2
+        bullet2,
+		bullet3
     }
 
     public bulletType type;
@@ -42,16 +43,30 @@ public class enemyHitCounter : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if(type == (bulletType)col.gameObject.GetComponent<bulletScript>().type) // If enemy's "weakness" bullet type is same as player's who shot it
-        {
-            DestroyObject(type);
-            Destroy(col.gameObject);
-        }
 
-        if (type != (bulletType)col.gameObject.GetComponent<bulletScript>().type)
-        {
-            Destroy(col.gameObject);
-        }
+		if (col.gameObject.tag == "Bullet") {
+			if (type == bulletType.bullet3 && col.gameObject.tag == "Bullet") {
+			
+				Destroy (col.gameObject);
+				Destroy (gameObject);
+			}
+			if (type == (bulletType)col.gameObject.GetComponent<bulletScript> ().type) { // If enemy's "weakness" bullet type is same as player's who shot it
+				DestroyObject (type);
+				Destroy (col.gameObject);
+			}
+			if (type != (bulletType)col.gameObject.GetComponent<bulletScript>().type)
+			{
+				Destroy(col.gameObject);
+			}
+
+		}
+		if (col.gameObject.tag == "DangerZone") {
+			Destroy (gameObject);
+		}
+     
+
+	
+
     }
 
 	public void setType(bulletType tyyppi){

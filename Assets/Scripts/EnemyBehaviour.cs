@@ -22,7 +22,7 @@ public class EnemyBehaviour : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, moveTarget, Time.deltaTime * moveSpeed);
         lifetime += Time.deltaTime;
 
-        if (lifetime > 10)
+        if (lifetime > 100)
         {
             Destroy(gameObject);
         }
