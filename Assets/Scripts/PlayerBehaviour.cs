@@ -13,7 +13,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	public float shootingSpeed = 0.5f;
 
 	public float bulletSpeed = 50f;
-
+    AudioSource audio;
 	float nextShot = 0f;
 
 	public enum bulletType
@@ -43,6 +43,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Use this for initialization
     void Start ()
     {
+        audio = FindObjectOfType<AudioSource>();
 		gun = transform.Find ("gun");
 		shotType = bulletType.bullet1;
 		if (id == PlayerId.RIGHT) {
@@ -106,6 +107,7 @@ public class PlayerBehaviour : MonoBehaviour {
 			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,gun.position,gun.rotation) as GameObject;
 			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
 			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
+            audio.Play();
 			nextShot = Time.time + shootingSpeed;
 		}
 
