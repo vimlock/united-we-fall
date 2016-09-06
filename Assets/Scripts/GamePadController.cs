@@ -8,17 +8,10 @@ public class GamePadController : IController
     GamePadState state;
     GamePadState prevState;
 
-	public GameObject ukko1;
-	public GameObject ukko2;
 
-	public bool deadzoneR = true;
-	public bool deadzoneL = true;
-	public bool triggerL = false;
-	public bool triggerR = false;
-	public bool shoulderL = false;
-	public bool shoulderR = false;
-	public bool stickL = false;
-	public bool stickR = false;
+//	public bool deadzoneR = true;
+//	public bool deadzoneL = true;
+
 
     // Use this for initialization
     void Start()
@@ -87,7 +80,7 @@ public class GamePadController : IController
 				angleLeft = Mathf.Atan2 (-state.ThumbSticks.Left.Y, -state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
 				
 				angleRight = Mathf.Atan2 (-state.ThumbSticks.Right.Y, -state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
-
+				
 	
 
 
