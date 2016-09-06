@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using XInputDotNetPure; // Required in C#
 
-public class GamePadController : MonoBehaviour
+public class GamePadController : IController
 {
     bool playerIndexSet = false;
     PlayerIndex playerIndex;
@@ -11,8 +11,6 @@ public class GamePadController : MonoBehaviour
 	public GameObject ukko1;
 	public GameObject ukko2;
 
-	public float angleL = 0f;
-	public float angleR = 0f;
 	public bool deadzoneR = true;
 	public bool deadzoneL = true;
 	public bool triggerL = false;
@@ -86,9 +84,9 @@ public class GamePadController : MonoBehaviour
 			deadzoneR = true;
 		}
 				
-				angleL = Mathf.Atan2 (-state.ThumbSticks.Left.Y, -state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
+				angleLeft = Mathf.Atan2 (-state.ThumbSticks.Left.Y, -state.ThumbSticks.Left.X) * Mathf.Rad2Deg;
 				
-				angleR = Mathf.Atan2 (-state.ThumbSticks.Right.Y, -state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
+				angleRight = Mathf.Atan2 (-state.ThumbSticks.Right.Y, -state.ThumbSticks.Right.X) * Mathf.Rad2Deg;
 
 	
 
