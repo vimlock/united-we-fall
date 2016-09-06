@@ -49,6 +49,10 @@ public class PlayerBehaviour : MonoBehaviour
     // Time in seconds between weapon swaps
     private float swapTimer = 0.0f;
 
+    // How many bullets we're shoothing currently
+    // Used for sound and particle effects
+    public float firerate = 0.0f;
+
     // The controller component.
     public IController controller;
 
@@ -103,6 +107,16 @@ public class PlayerBehaviour : MonoBehaviour
                 FinishWeaponSwap();
             }
         }
+
+        if (firerate >= 0.25f) {
+            firerate = firerate * 0.8f;
+
+            if (firerate < 0.25f) {
+                firerate = 0.0f;
+                shootingSound.loop = false;
+            }
+        }
+
 
         // No controller? We're out of luck then.
         if (controller == null) {
@@ -177,9 +191,9 @@ public class PlayerBehaviour : MonoBehaviour
 
         tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType) bulletType;
         tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
-        shootingSound.Stop();
 
         ammo--;
+        firerate += 1.0f;
         shotTimer = shootingSpeed;
 
         if(ammo == 0)
@@ -189,7 +203,10 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            shootingSound.Play();
+            if (!shootingSound.isPlaying) {
+                shootingSound.Play();
+            }
+            shootingSound.loop = true;
         }
     }
 
