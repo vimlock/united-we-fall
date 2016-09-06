@@ -1,44 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBehaviour : MonoBehaviour {
-
-	public bool triggeraL = false;
-	public bool triggeraR = false;
-	public bool shoulderaL = false;
-	public bool shoulderaR = false;
-	public bool stickaL = false;
-	public bool stickaR = false;
-
-	public float shootingSpeed = 0.5f;
-
-	public int ammo;
-	public int ammoMax = 50;
-	public float bulletSpeed = 50f;
-	public float reloadTime = 2f;
-	float reloadact = 0;
-	bool reloading = false;
-    AudioSource ShootingSound;
-    AudioSource LastBulletSound;
-	float nextShot = 0f;
-
-	public enum bulletType
+public class PlayerBehaviour : MonoBehaviour
+{
+	public enum BulletType
 	{
-		bullet1,
-		bullet2
+		RED,
+		BLUE
 	}
-	bulletType shotType;
-
-	Transform gun;
-	Transform shootingPoint;
-
-	
 
     // Should probably think of a better name for this.
     public enum PlayerId {
         LEFT,
         RIGHT
     };
+
+    [Tooltip("Interval between bullets")]
+	public float shootingSpeed = 0.5f;
+
+    [Tooltip("Time it takes for the player to reload")]
+	public float reloadSpeed = 2.0f;
+
+    [Tooltip("Time it takes for the player to swap weapons")]
+    public float swapSpeed = 1.0f;
+
+	public int ammo;
+	public int ammoMax = 50;
+
+	public float bulletSpeed = 50f;
+    public AudioSource shootingSound;
+    public AudioSource lastBulletSound;
+	public Transform gun;
+	public Transform shootingPoint;
+
+    // Should be references to prefabs
+    public GameObject redBullet;
+    public GameObject blueBullet;
+
+    // Which bullet the player is currently using
+	private BulletType bulletType;
+
+    // Time it takes the reload to complete
+    private float reloadTimer = 0.0f;
+
+    // Time it takes us to be ready to fire again (in seconds)
+    private float shotTimer = 0.0f;
+
+    // Time in seconds between weapon swaps
+    private float swapTimer = 0.0f;
 
     // The controller component.
     public IController controller;
@@ -50,17 +59,23 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Use this for initialization
     void Start ()
     {
-        ShootingSound = GameObject.Find("GunLeft").GetComponent<AudioSource>();
-        LastBulletSound = GameObject.Find("LastBulletLeft").GetComponent<AudioSource>();
         ammo = ammoMax;
 		gun = transform.Find ("gun");
-		shootingPoint = transform.Find ("gun").Find ("shootingpoint");
-		shotType = bulletType.bullet1;
+        if (gun == null) {
+            Debug.LogError("gun transform missing from player");
+        }
+
+        if (gun != null) {
+            shootingPoint = gun.Find ("shootingpoint");
+        }
+
 		if (id == PlayerId.RIGHT) {
-            ShootingSound = GameObject.Find("GunRight").GetComponent<AudioSource>();
-            LastBulletSound = GameObject.Find("LastBulletRight").GetComponent<AudioSource>();
-            shotType = bulletType.bullet2;
+            bulletType = BulletType.RED;
 		}
+        else {
+            bulletType = BulletType.BLUE;
+        }
+
         if (controller == null) {
             Debug.LogError("PlayerBehaviour does not have IController component assigned");
         }
@@ -69,141 +84,157 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if (shotTimer > 0.0f) {
+            shotTimer -= Time.deltaTime;
+        }
+
+        if (reloadTimer > 0.0f)  {
+            reloadTimer -= Time.deltaTime;
+
+            if (reloadTimer <= 0.0f) {
+                FinishWeaponReload();
+            }
+        }
+
+        if (swapTimer > 0.0f) {
+            swapTimer -= Time.deltaTime;
+
+            if (swapTimer <= 0.0f) {
+                FinishWeaponSwap();
+            }
+        }
+
         // No controller? We're out of luck then.
         if (controller == null) {
             return;
         }
 
+        // We should have implemented a better system for this...
+        
+        bool deadzone = false;
+        bool shoulder = false;
+        bool trigger = false;
+        bool stick = false;
+        float angle = 0.0f;
+    
         if (id == PlayerId.LEFT) {
-			if (!controller.deadzoneL) {
-				gun.rotation = Quaternion.AngleAxis (controller.angleLeft, Vector3.forward);
-			}
+            deadzone = controller.deadzoneL;
+            shoulder = controller.shoulderL;
+            trigger = controller.triggerL;
+            stick = controller.stickL;
+            angle = controller.angleLeft;
         }
         else if (id == PlayerId.RIGHT){
-			if (!controller.deadzoneR) {
-				gun.rotation = Quaternion.AngleAxis (controller.angleRight, Vector3.forward);
-			}
+            deadzone = controller.deadzoneR;
+            shoulder = controller.shoulderR;
+            trigger = controller.triggerR;
+            stick = controller.stickR;
+            angle = controller.angleRight;
         }
 
+        if (!deadzone) {
+            gun.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+        }
 
-		//not sure how we will do this, this saves the state to boolean and in fixed update does the function
-		if (controller.shoulderL) {
-			shoulderaL = true;
-		}
+        if (shoulder) {
+            StartWeaponSwap();
+        }
 
-		if (controller.shoulderR) {
-			shoulderaR = true;
-		}
+        if (trigger) {
+            Shoot();
+        }
 
-		if (controller.triggerL) {
-			triggeraL = true;
-		}
-
-		if (controller.triggerR) {
-			triggeraR = true;
-		}
-
-		if (controller.stickL) {
-			stickaL = true;
-		}
-
-		if (controller.stickR) {
-			stickaR = true;
-		}
-
-
-	}
-
-	void shoot(PlayerId idv){
-		if (Time.time > nextShot && id == idv && ammo >0) {
-			
-			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,shootingPoint.position,shootingPoint.rotation) as GameObject;
-			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
-			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
-            ShootingSound.Stop();
-            if(ammo == 1)
-            {
-                LastBulletSound.Play();
-            }
-            else
-            {
-                ShootingSound.Play();
-            }
-            nextShot = Time.time + shootingSpeed;
-			ammo--;
-			Debug.Log ("Ammo: " + ammo);
-		}
-		if (ammo <= 0) {
-			reload (idv);
-		}
-		}
-	void reload(PlayerId idv){
-		if (idv == id) {
-			if (!reloading) {
-				reloadact = Time.time + reloadTime;
-			}
-			reloading = true;
+		if (stick) {
+			StartWeaponReload();
 		}
 	}
 
-	void FixedUpdate(){
+	void Shoot()
+    {
+        // Can't shoot while swapping weapons
+        if (swapTimer > 0.0f) {
+            return;
+        }
 
-		if (shoulderaL) {
-			swapGun ();
-			Debug.Log ("swapped guns!");
-			shoulderaL = false;
+        // Can't shoot while reloading
+        if (reloadTimer > 0.0f) {
+            return;
+        }
+
+        // Can't shoot without ammo
+        if (ammo <= 0) {
+            return;
+        }
+
+        // Can't shoot too fast
+        if (shotTimer > 0.0f) {
+            return;
+        }
+
+        GameObject prefab = bulletType == BulletType.RED ? redBullet : blueBullet;
+
+        GameObject tmp = Instantiate(prefab, shootingPoint.position, shootingPoint.rotation) as GameObject;
+
+        tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType) bulletType;
+        tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
+        shootingSound.Stop();
+
+        ammo--;
+        shotTimer = shootingSpeed;
+
+        if(ammo == 0)
+        {
+            lastBulletSound.Play();
+            StartWeaponReload();
+        }
+        else
+        {
+            shootingSound.Play();
+        }
+    }
+
+    // Called when the weapon reload is started
+    // Can be called even if the reload is not complete!
+    void StartWeaponReload()
+    {
+        // still in middle of reloading?
+        if (reloadTimer > 0.0f) {
+            return;
+        }
+
+        reloadTimer = reloadSpeed;
+    }
+
+    void InterruptWeaponReload()
+    {
+        reloadTimer = -1.0f;
+    }
+
+    // Called when the weapon reload is complete
+    void FinishWeaponReload()
+    {
+        ammo = ammoMax;
+    }
+
+    // Called when weapon swap is started
+    // Can be called even if the swap is not complete!
+    void StartWeaponSwap()
+    {
+        swapTimer = swapSpeed;
+
+        InterruptWeaponReload();
+
+		if (bulletType == BulletType.RED) {
+			bulletType = BulletType.BLUE;
 		}
-
-		if (shoulderaR) {
-			swapGun ();
-			Debug.Log ("swapped guns!");
-			shoulderaR = false;
+        else {
+			bulletType = BulletType.RED;
 		}
+    }
 
-		if (triggeraL) {
-			shoot (PlayerId.LEFT);
-
-			triggeraL = false;
-		}
-
-		if (triggeraR) {
-			shoot (PlayerId.RIGHT);
-
-			triggeraR = false;
-		}
-
-		if (stickaL) {
-			Debug.Log ("Reloading Left");
-			reload (PlayerId.LEFT);
-			stickaL = false;
-		}
-
-		if (stickaR) {
-			Debug.Log ("Reloading Right");
-			reload (PlayerId.RIGHT);
-			stickaR = false;
-		}
-
-		if (reloading) {
-			if (Time.time > reloadact) {
-				ammo = ammoMax;
-				reloading = false;
-			}
-
-		}
-
-
-	}
-
-	void swapGun(){
-		if (shotType == bulletType.bullet1) {
-			shotType = bulletType.bullet2;
-		} else {
-			shotType = bulletType.bullet1;
-		}
-	}
-
-
-
-
+    // Called when the weapon swap is complete
+    void FinishWeaponSwap()
+    {
+    }
 }
+

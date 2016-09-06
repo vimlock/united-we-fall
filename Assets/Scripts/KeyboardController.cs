@@ -28,6 +28,8 @@ public class KeyboardController : IController
             dl -= turnSpeed;
         }
 
+        stickL = Input.GetKey("z");
+
         // Left back buttons
         triggerL = Input.GetKey("x");
         shoulderL = Input.GetKey("c");
@@ -40,6 +42,8 @@ public class KeyboardController : IController
         if (Input.GetKey("k")) {
             dr -= turnSpeed;
         }
+
+        stickR = Input.GetKey("m");
 
         // Right back buttons
         triggerR = Input.GetKey("n");
@@ -55,5 +59,8 @@ public class KeyboardController : IController
         // Keep the angles in 0-360 degree range
         angleLeft %= 360.0f;
         angleRight %= 360.0f;
+
+        deadzoneL = false;
+        deadzoneR = false;
 	}
 }
