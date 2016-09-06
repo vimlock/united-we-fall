@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using BulletType = BulletBehaviour.BulletType;
+
 public class PlayerBehaviour : MonoBehaviour
 {
-	public enum BulletType
-	{
-		RED,
-		BLUE
-	}
-
     // Should probably think of a better name for this.
     public enum PlayerId {
         LEFT,
@@ -27,7 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
 	public int ammo;
 	public int ammoMax = 50;
 
-	public float bulletSpeed = 50f;
+	public float bulletSpeed = 50.0f;
     public AudioSource shootingSound;
     public AudioSource lastBulletSound;
 	public Transform gun;
@@ -48,6 +44,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     // Time in seconds between weapon swaps
     private float swapTimer = 0.0f;
+
+    // Last state of the swap button
+    private bool swapButtonState = false;
 
     // How many bullets we're shoothing currently
     // Used for sound and particle effects
@@ -117,6 +116,9 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
+        if (ammo == 0) {
+            StartWeaponReload();
+        }
 
         // No controller? We're out of luck then.
         if (controller == null) {
@@ -150,9 +152,11 @@ public class PlayerBehaviour : MonoBehaviour
             gun.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
         }
 
-        if (shoulder) {
+        if (shoulder && !swapButtonState) {
             StartWeaponSwap();
         }
+        swapButtonState = shoulder;
+
 
         if (trigger) {
             Shoot();
@@ -189,8 +193,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         GameObject tmp = Instantiate(prefab, shootingPoint.position, shootingPoint.rotation) as GameObject;
 
-        tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType) bulletType;
-        tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
+        tmp.GetComponent<BulletBehaviour>().type = bulletType;
+        tmp.GetComponent<BulletBehaviour>().speed = bulletSpeed;
 
         ammo--;
         firerate += 1.0f;
@@ -199,7 +203,6 @@ public class PlayerBehaviour : MonoBehaviour
         if(ammo == 0)
         {
             lastBulletSound.Play();
-            StartWeaponReload();
         }
         else
         {
