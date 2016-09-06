@@ -29,6 +29,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	bulletType shotType;
 
 	Transform gun;
+	Transform shootingPoint;
 
 	
 
@@ -51,6 +52,7 @@ public class PlayerBehaviour : MonoBehaviour {
         audio = FindObjectOfType<AudioSource>();
 		ammo = ammoMax;
 		gun = transform.Find ("gun");
+		shootingPoint = transform.Find ("gun").Find ("shootingpoint");
 		shotType = bulletType.bullet1;
 		if (id == PlayerId.RIGHT) {
 			shotType = bulletType.bullet2;
@@ -110,7 +112,8 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	void shoot(PlayerId idv){
 		if (Time.time > nextShot && id == idv && ammo >0) {
-			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,gun.position,gun.rotation) as GameObject;
+			
+			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,shootingPoint.position,shootingPoint.rotation) as GameObject;
 			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
 			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
             audio.Stop();
