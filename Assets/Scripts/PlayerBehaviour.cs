@@ -18,7 +18,8 @@ public class PlayerBehaviour : MonoBehaviour {
 	public float reloadTime = 2f;
 	float reloadact = 0;
 	bool reloading = false;
-    AudioSource audio;
+    AudioSource ShootingSound;
+    AudioSource LastBulletSound;
 	float nextShot = 0f;
 
 	public enum bulletType
@@ -49,13 +50,16 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Use this for initialization
     void Start ()
     {
-        audio = FindObjectOfType<AudioSource>();
-		ammo = ammoMax;
+        ShootingSound = GameObject.Find("GunLeft").GetComponent<AudioSource>();
+        LastBulletSound = GameObject.Find("LastBulletLeft").GetComponent<AudioSource>();
+        ammo = ammoMax;
 		gun = transform.Find ("gun");
 		shootingPoint = transform.Find ("gun").Find ("shootingpoint");
 		shotType = bulletType.bullet1;
 		if (id == PlayerId.RIGHT) {
-			shotType = bulletType.bullet2;
+            ShootingSound = GameObject.Find("GunRight").GetComponent<AudioSource>();
+            LastBulletSound = GameObject.Find("LastBulletRight").GetComponent<AudioSource>();
+            shotType = bulletType.bullet2;
 		}
         if (controller == null) {
             Debug.LogError("PlayerBehaviour does not have IController component assigned");
@@ -116,8 +120,8 @@ public class PlayerBehaviour : MonoBehaviour {
 			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,shootingPoint.position,shootingPoint.rotation) as GameObject;
 			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
 			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
-            audio.Stop();
-            audio.Play();
+            ShootingSound.Stop();
+            ShootingSound.Play();
 			nextShot = Time.time + shootingSpeed;
 			ammo--;
 			Debug.Log ("Ammo: " + ammo);
