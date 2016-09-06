@@ -10,6 +10,23 @@ public class PlayerBehaviour : MonoBehaviour {
 	public bool stickaL = false;
 	public bool stickaR = false;
 
+	public float shootingSpeed = 0.5f;
+
+	public float bulletSpeed = 50f;
+
+	float nextShot = 0f;
+
+	public enum bulletType
+	{
+		bullet1,
+		bullet2
+	}
+	bulletType shotType;
+
+	Transform gun;
+
+	
+
     // Should probably think of a better name for this.
     public enum PlayerId {
         LEFT,
@@ -26,6 +43,11 @@ public class PlayerBehaviour : MonoBehaviour {
 	// Use this for initialization
     void Start ()
     {
+		gun = transform.Find ("gun");
+		shotType = bulletType.bullet1;
+		if (id == PlayerId.RIGHT) {
+			shotType = bulletType.bullet2;
+		}
         if (controller == null) {
             Debug.LogError("PlayerBehaviour does not have IController component assigned");
         }
@@ -41,12 +63,12 @@ public class PlayerBehaviour : MonoBehaviour {
 
         if (id == PlayerId.LEFT) {
 			if (!controller.deadzoneL) {
-				transform.rotation = Quaternion.AngleAxis (controller.angleLeft, Vector3.forward);
+				gun.rotation = Quaternion.AngleAxis (controller.angleLeft, Vector3.forward);
 			}
         }
         else if (id == PlayerId.RIGHT){
 			if (!controller.deadzoneR) {
-				transform.rotation = Quaternion.AngleAxis (controller.angleRight, Vector3.forward);
+				gun.rotation = Quaternion.AngleAxis (controller.angleRight, Vector3.forward);
 			}
         }
 
@@ -79,11 +101,21 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	}
 
+	void shoot(PlayerId idv){
+		if (Time.time > nextShot && id == idv) {
+			GameObject tmp = Instantiate(Resources.Load(shotType.ToString())as GameObject,gun.position,gun.rotation) as GameObject;
+			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
+			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
+			nextShot = Time.time + shootingSpeed;
+		}
+
+
+		}
 
 	void FixedUpdate(){
 
 		if (shoulderaL) {
-			Debug.Log ("Painettu shoulderL");
+			
 			shoulderaL = false;
 		}
 
@@ -93,11 +125,13 @@ public class PlayerBehaviour : MonoBehaviour {
 		}
 
 		if (triggeraL) {
+			shoot (PlayerId.LEFT);
 			Debug.Log ("Painettu triggerL");
 			triggeraL = false;
 		}
 
 		if (triggeraR) {
+			shoot (PlayerId.RIGHT);
 			Debug.Log ("Painettu triggerR");
 			triggeraR = false;
 		}
@@ -114,5 +148,6 @@ public class PlayerBehaviour : MonoBehaviour {
 
 
 	}
-    
+
+
 }

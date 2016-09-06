@@ -3,26 +3,25 @@ using System.Collections;
 
 public class bulletScript : MonoBehaviour {
 	// Use this for initialization
-    
+	public float bulletSpeed = 75f;
     public enum bulletType
     {
         bullet1,
         bullet2
     }
-
+	Rigidbody rb;
     public bulletType type;
 
 	void Start () {
-        if (gameObject.tag == "Bullet1") // Using these if statements until we know which player shoots bullet
-            type = bulletType.bullet1;
-
-        if (gameObject.tag == "Bullet2")
-            type = bulletType.bullet2;
+		rb = GetComponent<Rigidbody> ();
+		if (type == null) {
+			type = bulletType.bullet1;
+		}
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
+		rb.velocity = transform.forward * bulletSpeed;
 	}
 
 }
