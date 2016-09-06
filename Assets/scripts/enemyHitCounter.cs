@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class enemyHitCounter : MonoBehaviour {
-    
+
+    public int KillCounter;
     public enum bulletType
     {
         bullet1,
@@ -28,10 +29,12 @@ public class enemyHitCounter : MonoBehaviour {
         {
             case bulletType.bullet1:
                     Destroy(gameObject);
+                    KillCounter++;
                 break;
                 
             case bulletType.bullet2:
                     Destroy(gameObject);
+                    KillCounter++;
                 break;
         }
             
