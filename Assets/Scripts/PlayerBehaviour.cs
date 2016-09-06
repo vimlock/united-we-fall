@@ -121,8 +121,15 @@ public class PlayerBehaviour : MonoBehaviour {
 			tmp.GetComponent<bulletScript> ().type = (bulletScript.bulletType)shotType;
 			tmp.GetComponent<bulletScript> ().bulletSpeed = bulletSpeed;
             ShootingSound.Stop();
-            ShootingSound.Play();
-			nextShot = Time.time + shootingSpeed;
+            if(ammo == 1)
+            {
+                LastBulletSound.Play();
+            }
+            else
+            {
+                ShootingSound.Play();
+            }
+            nextShot = Time.time + shootingSpeed;
 			ammo--;
 			Debug.Log ("Ammo: " + ammo);
 		}
