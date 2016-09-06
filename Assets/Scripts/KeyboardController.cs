@@ -28,6 +28,9 @@ public class KeyboardController : IController
             dl -= turnSpeed;
         }
 
+        // Left back buttons
+        triggerL = Input.GetKey("x");
+        shoulderL = Input.GetKey("c");
 
         // Right thumb stick
 	    if (Input.GetKey("j")) {
@@ -37,6 +40,10 @@ public class KeyboardController : IController
         if (Input.GetKey("k")) {
             dr -= turnSpeed;
         }
+
+        // Right back buttons
+        triggerR = Input.GetKey("n");
+        shoulderR = Input.GetKey("b");
 
         dl *= Time.deltaTime;
         dr *= Time.deltaTime;
