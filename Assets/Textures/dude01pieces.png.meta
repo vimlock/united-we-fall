@@ -1,0 +1,186 @@
+fileFormatVersion: 2
+guid: 52bbcc1d275b8b241b6ba81e5d7eafcc
+timeCreated: 1473163372
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: dude01pieces_0
+    21300002: dude01pieces_1
+    21300004: dude01pieces_2
+    21300006: dude01pieces_3
+    21300008: dude01pieces_4
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: dude01pieces_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 291
+        width: 16
+        height: 212
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: dude01pieces_1
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 231
+        width: 208
+        height: 277
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 28, y: 138.5}
+        - {x: -16, y: 138.5}
+        - {x: -32, y: 134.5}
+        - {x: -104, y: 6.5}
+        - {x: -104, y: -35.5}
+        - {x: -100, y: -47.5}
+        - {x: -58, y: -45.5}
+        - {x: -59, y: -83.5}
+        - {x: -50, y: -138.5}
+        - {x: 72, y: -138.5}
+        - {x: 104, y: -43.5}
+        - {x: 104, y: 12.5}
+        - {x: 36, y: 133.5}
+    - name: dude01pieces_2
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 7
+        width: 240
+        height: 501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 103, y: -196.5}
+        - {x: 112, y: -171.5}
+        - {x: 120, y: -150.5}
+        - {x: 120, y: -73.5}
+        - {x: 116, y: -69.5}
+        - {x: 100, y: -73.5}
+        - {x: 102, y: -58.5}
+        - {x: 102, y: 56.5}
+        - {x: 120, y: 73.5}
+        - {x: 120, y: 137.5}
+        - {x: 108, y: 183.5}
+        - {x: 90, y: 212.5}
+        - {x: 76, y: 227.5}
+        - {x: 49, y: 243.5}
+        - {x: 29, y: 249.5}
+        - {x: 9, y: 250.5}
+        - {x: -31, y: 250.5}
+        - {x: -47, y: 246.5}
+        - {x: -71, y: 231.5}
+        - {x: -89, y: 213.5}
+        - {x: -107, y: 185.5}
+        - {x: -119, y: 142.5}
+        - {x: -120, y: 137.5}
+        - {x: -120, y: 70.5}
+        - {x: -115, y: 65.5}
+        - {x: -108, y: 63.5}
+        - {x: -107, y: 20.5}
+        - {x: -108, y: -51.5}
+        - {x: -120, y: -69.5}
+        - {x: -120, y: -130.5}
+        - {x: -118, y: -142.5}
+        - {x: -109, y: -179.5}
+        - {x: -90, y: -213.5}
+        - {x: -73, y: -232.5}
+        - {x: -43, y: -249.5}
+        - {x: -35, y: -250.5}
+        - {x: 25, y: -250.5}
+        - {x: 50, y: -244.5}
+        - {x: 69, y: -234.5}
+        - {x: 92, y: -213.5}
+    - name: dude01pieces_3
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 9
+        width: 68
+        height: 167
+      alignment: 9
+      pivot: {x: 0.5117173, y: 0.18988244}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14.796776, y: 135.28964}
+        - {x: -34.796776, y: 96.289635}
+        - {x: -34.796776, y: 5.2896347}
+        - {x: -27.796776, y: -31.710365}
+        - {x: 28.203224, y: -31.710365}
+        - {x: 33.203224, y: 12.289635}
+        - {x: 33.203224, y: 135.28964}
+    - name: dude01pieces_4
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 4
+        width: 149
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 3.5, y: 63}
+        - {x: -20.5, y: 57}
+        - {x: -74.5, y: -5}
+        - {x: -74.5, y: -46}
+        - {x: -61.5, y: -63}
+        - {x: 57.5, y: -63}
+        - {x: 74.5, y: -34}
+        - {x: 74.5, y: 60}
+        - {x: 68.5, y: 63}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
