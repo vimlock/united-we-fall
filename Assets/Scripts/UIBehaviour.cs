@@ -23,15 +23,20 @@ public class UIBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(Time.timeSinceLevelLoad);
+//        Debug.Log(Time.timeSinceLevelLoad);
         if (Time.timeSinceLevelLoad >= timer)
         {
             controller.GetComponent<GamePadController>().enableControls = true;
             ControlsImage.enabled = false;           
         }
 
-		if (GameOver.enabled = true) {
+		if (GameOver.enabled == true) {
 			controller.GetComponent<GamePadController>().enableControls = false;
+			if (Input.GetKey(KeyCode.Escape )) {
+				Application.LoadLevel (0);
+			}
 		}
+
+
     }
 }

@@ -17,7 +17,7 @@ public class MenuScript : MonoBehaviour {
 
     public void StartGame()
     {
-        Debug.Log("Start GAME");
-        // Application.LoadLevel(1); This is for now option if we want something else.
+       
+        Application.LoadLevel(1); 
     }
 }
