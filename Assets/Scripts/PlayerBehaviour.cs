@@ -227,6 +227,12 @@ public class PlayerBehaviour : MonoBehaviour
     // Called when the position swap is complete
     void FinishSwap()
     {
+        if (id == PlayerId.LEFT) {
+            id = PlayerId.RIGHT;
+        }
+        else {
+            id = PlayerId.LEFT;
+        }
     }
 }
 
