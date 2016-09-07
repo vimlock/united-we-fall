@@ -20,7 +20,7 @@ public class GameBehaviour : MonoBehaviour {
 
     private float angle = 0.0f;
     private float startAngle = 0.0f;
-    private float targetAngle = 0.0f;
+    private float targetAngle = 180.0f;
 
     // Use this for initialization
     void Start () {
