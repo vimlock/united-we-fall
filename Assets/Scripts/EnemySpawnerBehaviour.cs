@@ -102,7 +102,11 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 				}
 			}
 			if (stage == 3) {
-				int randomi = Random.Range (0, 2);
+				int randomi = 1;
+				spawnRate = 0.5f;
+				Spawn (spawnPositions [spawnPositionint], prefabs [randomi], enemyHitCounter.bulletType.bullet3);
+				toggleSpawnPosition (2);
+
 
 			}
 
