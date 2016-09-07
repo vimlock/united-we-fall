@@ -21,7 +21,7 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
     public float yRandom;
 
 	public float timer2 = 0;
-	public int stage = 0;
+	public int stage = -1;
 
 
 	// Use this for initialization
@@ -76,6 +76,12 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
             timer -= spawnRate;
 		
 
+			if (stage == -1) {
+				if (Time.time >= 12f) {
+					stage = 0;
+					timer2 = 0;
+				}
+			}
 				if (stage == 0) {
 					//stage 0
 					spawnRate = 1f;

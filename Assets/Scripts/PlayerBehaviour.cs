@@ -63,18 +63,21 @@ public class PlayerBehaviour : MonoBehaviour
 	// Use this for initialization
     void Start ()
     {
+		
         ammo = ammoMax;
 		gun = transform.Find ("gun");
         if (gun == null) {
             Debug.LogError("gun transform missing from player");
         }
-
+	
         if (gun != null) {
             shootingPoint = gun.Find ("shootingpoint");
         }
 
 		if (id == PlayerId.RIGHT) {
             bulletType = BulletType.RED;
+			gun.rotation = Quaternion.AngleAxis (0, Vector3.forward);
+
 		}
         else {
             bulletType = BulletType.BLUE;
