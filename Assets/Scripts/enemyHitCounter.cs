@@ -4,6 +4,9 @@ using System.Collections;
 public class enemyHitCounter : MonoBehaviour {
 
     public int KillCounter;
+
+	UIBehaviour Behaviour;
+
     public enum bulletType
     {
         RED,
@@ -15,7 +18,7 @@ public class enemyHitCounter : MonoBehaviour {
 
     void Start()
     {
-
+		Behaviour = FindObjectOfType<UIBehaviour> ();
     }
 
     // Update is called once per frame
@@ -64,6 +67,7 @@ public class enemyHitCounter : MonoBehaviour {
 
 		}
 		if (col.gameObject.tag == "DangerZone") {
+			Behaviour.GameOver.enabled = true;
 			Destroy (gameObject);
 		}
      
