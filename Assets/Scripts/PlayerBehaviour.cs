@@ -111,7 +111,6 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (ammo == 0) {
             StartWeaponReload();
-            reloadSound.Play();
         }
 
         // No controller? We're out of luck then.
@@ -199,6 +198,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Can be called even if the reload is not complete!
     public void StartWeaponReload()
     {
+        reloadSound.Play();
         // still in middle of reloading?
         if (reloadTimer > 0.0f) {
             return;
