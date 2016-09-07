@@ -49,6 +49,9 @@ public class PlayerBehaviour : MonoBehaviour
     // Should be assigned by a prefab or something else.
     public PlayerId id;
 
+    public UnityEngine.UI.Text ammoText;
+
+
 	// Use this for initialization
     void Start ()
     {
@@ -150,7 +153,18 @@ public class PlayerBehaviour : MonoBehaviour
 		if (stick) {
 			StartWeaponReload();
 		}
-	}
+
+        // Update GUI
+        if (ammoText) {
+            if (reloadTimer > 0.0f) {
+                ammoText.text = "Reloading";
+            }
+            else {
+                ammoText.text = string.Format("Ammo {0}/{1}", ammo, ammoMax);
+            }
+
+        }
+    }
 
 	void Shoot()
     {
@@ -188,17 +202,19 @@ public class PlayerBehaviour : MonoBehaviour
         else
         {
 			shootingSound.Stop ();
-                shootingSound.Play();
-            
-            
+            shootingSound.Play();
         }
+
     }
 
     // Called when the weapon reload is started
     // Can be called even if the reload is not complete!
     public void StartWeaponReload()
     {
-        reloadSound.Play();
+        if (reloadSound != null) {
+            reloadSound.Play();
+        }
+
         // still in middle of reloading?
         if (reloadTimer > 0.0f) {
             return;
