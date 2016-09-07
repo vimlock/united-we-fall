@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-using BulletType = BulletBehaviour.BulletType;
-
 public class PlayerBehaviour : MonoBehaviour
 {
     // Should probably think of a better name for this.
@@ -17,25 +15,18 @@ public class PlayerBehaviour : MonoBehaviour
     [Tooltip("Time it takes for the player to reload")]
 	public float reloadSpeed = 2.0f;
 
-    [Tooltip("Time it takes for the player to swap weapons")]
-    public float swapSpeed = 1.0f;
-
 	public int ammo;
 	public int ammoMax = 50;
 
 	public float bulletSpeed = 50.0f;
     public AudioSource shootingSound;
     public AudioSource lastBulletSound;
-    public AudioSource reloadSound;
+
 	public Transform gun;
 	public Transform shootingPoint;
 
-    // Should be references to prefabs
-    public GameObject redBullet;
-    public GameObject blueBullet;
-
-    // Which bullet the player is currently using
-	private BulletType bulletType;
+    // Should be set in prefabs
+    public GameObject bulletType;
 
     // Time it takes the reload to complete
     private float reloadTimer = 0.0f;
@@ -43,11 +34,8 @@ public class PlayerBehaviour : MonoBehaviour
     // Time it takes us to be ready to fire again (in seconds)
     private float shotTimer = 0.0f;
 
-    // Time in seconds between weapon swaps
+    // Time in seconds it takes player to swap position
     private float swapTimer = 0.0f;
-
-    // Last state of the swap button
-    private bool swapButtonState = false;
 
     // How many bullets we're shoothing currently
     // Used for sound and particle effects
@@ -63,28 +51,22 @@ public class PlayerBehaviour : MonoBehaviour
 	// Use this for initialization
     void Start ()
     {
-		
         ammo = ammoMax;
 		gun = transform.Find ("gun");
         if (gun == null) {
             Debug.LogError("gun transform missing from player");
         }
-	
+
         if (gun != null) {
             shootingPoint = gun.Find ("shootingpoint");
         }
 
-		if (id == PlayerId.RIGHT) {
-            bulletType = BulletType.RED;
-			gun.rotation = Quaternion.AngleAxis (0, Vector3.forward);
-
-		}
-        else {
-            bulletType = BulletType.BLUE;
-        }
-
         if (controller == null) {
             Debug.LogError("PlayerBehaviour does not have IController component assigned");
+        }
+
+        if (bulletType == null) {
+            Debug.LogError("PlayerBehaviour does not have bulletType assigned");
         }
 	}
 	
@@ -107,7 +89,7 @@ public class PlayerBehaviour : MonoBehaviour
             swapTimer -= Time.deltaTime;
 
             if (swapTimer <= 0.0f) {
-                FinishWeaponSwap();
+                FinishSwap();
             }
         }
 
@@ -132,12 +114,10 @@ public class PlayerBehaviour : MonoBehaviour
         // We should have implemented a better system for this...
         
         bool deadzone = false;
-        bool shoulder = false;
+
         bool trigger = false;
         bool stick = false;
         float angle = 0.0f;
-
-		shoulder = controller.shoulderL || controller.shoulderR;;
     
         if (id == PlayerId.LEFT) {
             deadzone = controller.deadzoneL;
@@ -155,12 +135,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (!deadzone) {
             gun.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
         }
-
-        if (shoulder && !swapButtonState) {
-            StartWeaponSwap();
-        }
-        swapButtonState = shoulder;
-
 
         if (trigger) {
             Shoot();
@@ -193,11 +167,7 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
 
-        GameObject prefab = bulletType == BulletType.RED ? redBullet : blueBullet;
-
-        GameObject tmp = Instantiate(prefab, shootingPoint.position, shootingPoint.rotation) as GameObject;
-
-        tmp.GetComponent<BulletBehaviour>().type = bulletType;
+        GameObject tmp = Instantiate(bulletType, shootingPoint.position, shootingPoint.rotation) as GameObject;
         tmp.GetComponent<BulletBehaviour>().speed = bulletSpeed;
 
         ammo--;
@@ -210,18 +180,17 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-			shootingSound.Stop ();
+            if (!shootingSound.isPlaying) {
                 shootingSound.Play();
-            
-            
+            }
+            shootingSound.loop = true;
         }
     }
 
     // Called when the weapon reload is started
     // Can be called even if the reload is not complete!
-    void StartWeaponReload()
+    public void StartWeaponReload()
     {
-        reloadSound.Play();
         // still in middle of reloading?
         if (reloadTimer > 0.0f) {
             return;
@@ -241,24 +210,16 @@ public class PlayerBehaviour : MonoBehaviour
         ammo = ammoMax;
     }
 
-    // Called when weapon swap is started
+    // Called when position swap is starte
     // Can be called even if the swap is not complete!
-    void StartWeaponSwap()
+    public void StartSwap(float time)
     {
-        swapTimer = swapSpeed;
-
         InterruptWeaponReload();
-
-		if (bulletType == BulletType.RED) {
-			bulletType = BulletType.BLUE;
-		}
-        else {
-			bulletType = BulletType.RED;
-		}
+        swapTimer = time;
     }
 
-    // Called when the weapon swap is complete
-    void FinishWeaponSwap()
+    // Called when the position swap is complete
+    void FinishSwap()
     {
     }
 }
