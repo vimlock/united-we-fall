@@ -52,8 +52,6 @@ public class GameBehaviour : MonoBehaviour {
         float t = swapTimer / swapSpeed;
         angle = (1.0f - t) * startAngle + t * targetAngle;
 
-        Debug.LogFormat("angle {0}", angle);
-
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         players.transform.rotation = q;
     }
@@ -64,8 +62,6 @@ public class GameBehaviour : MonoBehaviour {
         if (swapTimer > 0.0f) {
             return;
         }
-
-        Debug.Log("swapping");
 
         swapTimer = swapSpeed;
         players.transform.Find("PlayerLeft").GetComponent<PlayerBehaviour>().StartSwap(swapSpeed);
