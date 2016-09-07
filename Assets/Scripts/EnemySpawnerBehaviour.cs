@@ -51,6 +51,21 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
             }
         }
 	}
+	int spawnPositionToggleInt= 0;
+	void toggleSpawnPosition(int count){
+		if (count >= spawnPositionToggleInt) {
+			if (spawnPositionint == 1) {
+				spawnPositionint = 0;
+			} else {
+				spawnPositionint = 1;
+			}
+			spawnPositionToggleInt = -1;
+		}
+		spawnPositionToggleInt++;
+
+
+	}
+
 	int spawnPositionint = 0;
 	// Update is called once per frame
 	void Update () {
@@ -66,16 +81,36 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 					spawnRate = 1f;
 
 				Spawn (spawnPositions [spawnPositionint], prefabs [0],enemyHitCounter.bulletType.bullet3);
-					if (spawnPositionint == 1) {
-						spawnPositionint = 0;
-					} else {
-						spawnPositionint = 1;
-					}
+				toggleSpawnPosition (1);
 				}
 
 				if (stage == 1) {
-
+				int randomi = Random.Range (0, 2);
+				Debug.Log (randomi);
+				Spawn (spawnPositions [spawnPositionint], prefabs[randomi], enemyHitCounter.bulletType.bullet3);
+				toggleSpawnPosition (1);
+						
 				}
+
+			if (stage == 2) {
+				int randomi = Random.Range (0, 2);
+				spawnRate = 0.7f;
+				Spawn (spawnPositions [spawnPositionint], prefabs [randomi], enemyHitCounter.bulletType.bullet3);
+				toggleSpawnPosition (1);
+				if (((int)timer2 % 10) == 0) {
+					SpawnOnAll (prefabs [0]);
+				}
+			}
+			if (stage == 3) {
+				int randomi = 1;
+				spawnRate = 0.5f;
+				Spawn (spawnPositions [spawnPositionint], prefabs [randomi], enemyHitCounter.bulletType.bullet3);
+				toggleSpawnPosition (2);
+
+
+			}
+
+
 
 			if (timer2 > 25f) {
 				timer2 -= 25;
