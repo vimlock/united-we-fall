@@ -209,10 +209,10 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            if (!shootingSound.isPlaying) {
+			shootingSound.Stop ();
                 shootingSound.Play();
-            }
-            shootingSound.loop = true;
+            
+            
         }
     }
 
