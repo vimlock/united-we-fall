@@ -6,8 +6,8 @@ public class enemyHitCounter : MonoBehaviour {
     public int KillCounter;
     public enum bulletType
     {
-        bullet1,
-        bullet2,
+        RED,
+        BLUE,
 		bullet3
     }
 
@@ -28,12 +28,12 @@ public class enemyHitCounter : MonoBehaviour {
     {
         switch(type)
         {
-            case bulletType.bullet1:
+            case bulletType.RED:
                     Destroy(gameObject);
                     KillCounter++;
                 break;
                 
-            case bulletType.bullet2:
+            case bulletType.BLUE:
                     Destroy(gameObject);
                     KillCounter++;
                 break;
@@ -49,14 +49,17 @@ public class enemyHitCounter : MonoBehaviour {
 			
 				Destroy (col.gameObject);
 				Destroy (gameObject);
+				return;
 			}
-			if (type == (bulletType)col.gameObject.GetComponent<bulletScript> ().type) { // If enemy's "weakness" bullet type is same as player's who shot it
+			if (type == (bulletType)col.gameObject.GetComponent<BulletBehaviour> ().type) { // If enemy's "weakness" bullet type is same as player's who shot it
 				DestroyObject (type);
 				Destroy (col.gameObject);
+				return;
 			}
 			if (type != (bulletType)col.gameObject.GetComponent<bulletScript>().type)
 			{
 				Destroy(col.gameObject);
+				return;
 			}
 
 		}

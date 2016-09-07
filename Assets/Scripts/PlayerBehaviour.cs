@@ -132,17 +132,17 @@ public class PlayerBehaviour : MonoBehaviour
         bool trigger = false;
         bool stick = false;
         float angle = 0.0f;
+
+		shoulder = controller.shoulderL || controller.shoulderR;;
     
         if (id == PlayerId.LEFT) {
             deadzone = controller.deadzoneL;
-            shoulder = controller.shoulderL;
             trigger = controller.triggerL;
             stick = controller.stickL;
             angle = controller.angleLeft;
         }
         else if (id == PlayerId.RIGHT){
             deadzone = controller.deadzoneR;
-            shoulder = controller.shoulderR;
             trigger = controller.triggerR;
             stick = controller.stickR;
             angle = controller.angleRight;

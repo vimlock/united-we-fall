@@ -6,17 +6,17 @@ public class bulletScript : MonoBehaviour {
 	public float bulletSpeed = 75f;
     public enum bulletType
     {
-        bullet1,
-        bullet2
+        RED,
+        BLUE
     }
 	Rigidbody2D rb;
     public bulletType type;
 
 	void Start () {
-		Destroy (gameObject, 20f);
+		Destroy (gameObject, 10f);
 		rb = GetComponent<Rigidbody2D> ();
 		if (type == null) {
-			type = bulletType.bullet1;
+			type = bulletType.RED;
 		}
     }
 	
