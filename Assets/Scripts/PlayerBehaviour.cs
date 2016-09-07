@@ -51,15 +51,21 @@ public class PlayerBehaviour : MonoBehaviour
 	// Use this for initialization
     void Start ()
     {
+		
         ammo = ammoMax;
 		gun = transform.Find ("gun");
         if (gun == null) {
             Debug.LogError("gun transform missing from player");
         }
-
+	
         if (gun != null) {
             shootingPoint = gun.Find ("shootingpoint");
         }
+
+		if (id == PlayerId.RIGHT) {
+			gun.rotation = Quaternion.AngleAxis (0, Vector3.forward);
+
+		}
 
         if (controller == null) {
             Debug.LogError("PlayerBehaviour does not have IController component assigned");
@@ -180,10 +186,10 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            if (!shootingSound.isPlaying) {
+			shootingSound.Stop ();
                 shootingSound.Play();
-            }
-            shootingSound.loop = true;
+            
+            
         }
     }
 
