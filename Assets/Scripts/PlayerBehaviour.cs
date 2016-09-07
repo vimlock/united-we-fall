@@ -21,8 +21,9 @@ public class PlayerBehaviour : MonoBehaviour
 	public float bulletSpeed = 50.0f;
     public AudioSource shootingSound;
     public AudioSource lastBulletSound;
+    public AudioSource reloadSound;
 
-	public Transform gun;
+    public Transform gun;
 	public Transform shootingPoint;
 
     // Should be set in prefabs
@@ -110,6 +111,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (ammo == 0) {
             StartWeaponReload();
+            reloadSound.Play();
         }
 
         // No controller? We're out of luck then.
