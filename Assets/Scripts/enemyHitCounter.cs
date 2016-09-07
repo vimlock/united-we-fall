@@ -27,6 +27,14 @@ public class enemyHitCounter : MonoBehaviour {
 
     }
 
+    void OnDestroy()
+    {
+        GameObject gameController = GameObject.Find("GameController");
+        if (gameController) {
+            gameController.GetComponent<GameBehaviour>().IncrementKillCount();
+        }
+    }
+
     void DestroyObject(bulletType type)
     {
         switch(type)

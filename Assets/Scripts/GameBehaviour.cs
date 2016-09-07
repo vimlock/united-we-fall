@@ -11,6 +11,7 @@ public class GameBehaviour : MonoBehaviour {
 
     public GameObject guiWeaponLeft;
     public GameObject guiWeaponRight;
+    public UnityEngine.UI.Text guiKillCount;
 
     [Tooltip("Time it takes for the players to swap positions")]
     public float swapSpeed = 1.0f;
@@ -25,6 +26,8 @@ public class GameBehaviour : MonoBehaviour {
     private float startAngle = 0.0f;
     private float targetAngle = 180.0f;
 
+    private int killCount = 0;
+
     // Use this for initialization
     void Start () {
         if (guiWeaponLeft == null) {
@@ -33,6 +36,10 @@ public class GameBehaviour : MonoBehaviour {
 
         if (guiWeaponRight == null) {
             guiWeaponRight = GameObject.Find("Canvas/WeaponRight");
+        }
+
+        if (guiKillCount != null) {
+            guiKillCount.text = "0";
         }
 
         if (guiWeaponLeft == null) {
@@ -74,6 +81,12 @@ public class GameBehaviour : MonoBehaviour {
 
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         players.transform.rotation = q;
+    }
+    
+    public void IncrementKillCount()
+    {
+        killCount++;
+        guiKillCount.text = string.Format("{0}", killCount);
     }
 
     void SwapPlayers()
