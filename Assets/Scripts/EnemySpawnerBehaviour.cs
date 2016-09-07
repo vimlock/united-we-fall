@@ -126,10 +126,16 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 				toggleSpawnPosition (2);
 
 			}
-			if (stage >= 5) {
+			if (stage == 5) {
 				spawnRate = 0.5f;
 				int randomi = Random.Range (0, prefabs.Length);
 				Spawn (RandomSpawnPoint (), prefabs [randomi]);
+			}
+
+			if (stage >= 6) {
+				spawnRate = 0.3f;
+				int randomi = Random.Range (0, prefabs.Length);
+				SpawnOnAll (prefabs [randomi]);
 			}
 
 
