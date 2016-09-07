@@ -160,7 +160,7 @@ public class PlayerBehaviour : MonoBehaviour
                 ammoText.text = "Reloading";
             }
             else {
-                ammoText.text = string.Format("Ammo {0}/{1}", ammo, ammoMax);
+                ammoText.text = string.Format("{0}/{1}", ammo, ammoMax);
             }
 
         }
