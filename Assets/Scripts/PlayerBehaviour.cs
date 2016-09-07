@@ -143,7 +143,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         if (!deadzone) {
-			gun.rotation = Quaternion.Euler (new Vector3(0,0,angle));
+			gun.rotation = Quaternion.Slerp (gun.rotation,Quaternion.Euler(new Vector3(0,0,angle)),0.05f);
         }
 
         if (trigger) {
