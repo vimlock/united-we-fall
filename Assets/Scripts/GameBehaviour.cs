@@ -9,6 +9,9 @@ public class GameBehaviour : MonoBehaviour {
     // Prefab referense to the players
     public GameObject players;
 
+    public GameObject guiWeaponLeft;
+    public GameObject guiWeaponRight;
+
     [Tooltip("Time it takes for the players to swap positions")]
     public float swapSpeed = 1.0f;
 
@@ -24,6 +27,22 @@ public class GameBehaviour : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        if (guiWeaponLeft == null) {
+            guiWeaponLeft = GameObject.Find("Canvas/WeaponLeft");
+        }
+
+        if (guiWeaponRight == null) {
+            guiWeaponRight = GameObject.Find("Canvas/WeaponRight");
+        }
+
+        if (guiWeaponLeft == null) {
+            Debug.LogError("weaponLeft not assigned in GameBehaviour");
+        }
+
+        if (guiWeaponRight == null) {
+            Debug.LogError("weaponRight not assigned in GameBehaviour");
+        }
+
         if (players == null) {
             Debug.LogError("players not assigned in GameBehaviour");
         }
@@ -43,6 +62,7 @@ public class GameBehaviour : MonoBehaviour {
             if (swapTimer <= 0.0f) {
                 angle = targetAngle;
                 swapTimer = 0.0f;
+                FinishPlayerSwap();
             }
         }
         else {
@@ -51,8 +71,6 @@ public class GameBehaviour : MonoBehaviour {
 
         float t = swapTimer / swapSpeed;
         angle = (1.0f - t) * startAngle + t * targetAngle;
-
-        Debug.LogFormat("angle {0}", angle);
 
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         players.transform.rotation = q;
@@ -64,8 +82,6 @@ public class GameBehaviour : MonoBehaviour {
         if (swapTimer > 0.0f) {
             return;
         }
-
-        Debug.Log("swapping");
 
         swapTimer = swapSpeed;
         players.transform.Find("PlayerLeft").GetComponent<PlayerBehaviour>().StartSwap(swapSpeed);
@@ -79,5 +95,31 @@ public class GameBehaviour : MonoBehaviour {
             targetAngle = 180.0f;
             startAngle = 0.0f;
         }
+    }
+    
+    void FinishPlayerSwap()
+    {
+        // Swap the weapons on gui
+        GameObject weaponLeft;
+        GameObject ammoLeft;
+
+        GameObject weaponRight;
+        GameObject ammoRight;
+
+        weaponLeft = guiWeaponLeft.transform.FindChild("Weapon").gameObject;
+        ammoLeft = guiWeaponLeft.transform.FindChild("Ammo").gameObject;
+
+        weaponRight = guiWeaponRight.transform.FindChild("Weapon").gameObject;
+        ammoRight = guiWeaponRight.transform.FindChild("Ammo").gameObject;
+
+        weaponLeft.transform.SetParent(guiWeaponRight.transform, false);
+        ammoLeft.transform.SetParent(guiWeaponRight.transform, false);
+
+        weaponRight.transform.SetParent(guiWeaponLeft.transform, false);
+        ammoRight.transform.SetParent(guiWeaponLeft.transform, false);
+
+        // fucking hell, why is there no operator overloads in unity
+        weaponRight.transform.localScale = Vector3.Scale(weaponRight.transform.localScale, new Vector3(-1.0f, 1.0f, 1.0f));
+        weaponLeft.transform.localScale = Vector3.Scale(weaponLeft.transform.localScale, new Vector3(-1.0f, 1.0f, 1.0f));
     }
 }
