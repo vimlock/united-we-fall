@@ -20,6 +20,12 @@ public class EnemyBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.position = Vector3.MoveTowards(transform.position, moveTarget, Time.deltaTime * moveSpeed);
+		Vector3 vectorTarget = moveTarget - transform.position;
+		float angle = Mathf.Atan2 (vectorTarget.y, vectorTarget.x) * Mathf.Rad2Deg;
+
+		Quaternion q = Quaternion.FromToRotation (transform.position, moveTarget);
+		transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 90));
+
         lifetime += Time.deltaTime;
 
         if (lifetime > 100)

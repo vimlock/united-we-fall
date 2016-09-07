@@ -83,37 +83,53 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 				}
 			}
 				if (stage == 0) {
-					//stage 0
+					//stage 0 normi öllimöllejä vaan
 					spawnRate = 1f;
 
-				Spawn (spawnPositions [spawnPositionint], prefabs [0],enemyHitCounter.bulletType.bullet3);
+				Spawn (spawnPositions [spawnPositionint], prefabs [0]);
 				toggleSpawnPosition (1);
 				}
 
 				if (stage == 1) {
+
+				//stage 2. randomisti normi ja nopeampia
 				int randomi = Random.Range (0, 2);
 				Debug.Log (randomi);
-				Spawn (spawnPositions [spawnPositionint], prefabs[randomi], enemyHitCounter.bulletType.bullet3);
+				Spawn (spawnPositions [spawnPositionint], prefabs[randomi]);
 				toggleSpawnPosition (1);
 						
 				}
 
 			if (stage == 2) {
+				//stage 3. randomisti normi ja nopeampia nopeampaa tahtiin, tulee myös normeja lisää
 				int randomi = Random.Range (0, 2);
 				spawnRate = 0.7f;
-				Spawn (spawnPositions [spawnPositionint], prefabs [randomi], enemyHitCounter.bulletType.bullet3);
+				Spawn (spawnPositions [spawnPositionint], prefabs [randomi]);
 				toggleSpawnPosition (1);
 				if (((int)timer2 % 10) == 0) {
 					SpawnOnAll (prefabs [0]);
 				}
 			}
 			if (stage == 3) {
+				//stage 4. tulee nopeita vaa
 				int randomi = 1;
 				spawnRate = 0.5f;
-				Spawn (spawnPositions [spawnPositionint], prefabs [randomi], enemyHitCounter.bulletType.bullet3);
+				Spawn (spawnPositions [spawnPositionint], prefabs [randomi]);
 				toggleSpawnPosition (2);
 
 
+			}
+			if (stage == 4) {
+				int randomi = Random.Range (0, 2) + 2;
+				spawnRate = 1;
+				Spawn (spawnPositions [spawnPositionint], prefabs [randomi]);
+				toggleSpawnPosition (2);
+
+			}
+			if (stage >= 5) {
+				spawnRate = 0.5f;
+				int randomi = Random.Range (0, prefabs.Length);
+				Spawn (RandomSpawnPoint (), prefabs [randomi]);
 			}
 
 
@@ -152,17 +168,17 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
     void SpawnOnAll(GameObject prefab)
     {
         foreach (var sp in spawnPositions) {
-			Spawn(sp, prefab,enemyHitCounter.bulletType.bullet3);
+			Spawn(sp, prefab);
         }
     }
 
     // Spawns an enemy to a random spawn point
     void SpawnRandom(GameObject prefab)
     {
-		Spawn(RandomSpawnPoint(), prefab,enemyHitCounter.bulletType.bullet3);
+		Spawn(RandomSpawnPoint(), prefab);
     }
 
-	void Spawn(Transform transform, GameObject prefab,enemyHitCounter.bulletType bullet)
+	void Spawn(Transform transform, GameObject prefab)
     {
         if (transform == null) {
             Debug.LogError("Spawn() called with null transform");
@@ -181,6 +197,5 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 
 		GameObject tmp = Instantiate(prefab, position, Quaternion.identity) as GameObject;
 
-		tmp.GetComponent<enemyHitCounter> ().setType (bullet);
     }
 }
