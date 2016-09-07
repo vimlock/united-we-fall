@@ -22,6 +22,8 @@ public class PlayerBehaviour : MonoBehaviour
     public AudioSource shootingSound;
     public AudioSource lastBulletSound;
 
+    public AudioSource reloadSound;
+
 	public Transform gun;
 	public Transform shootingPoint;
 
@@ -197,6 +199,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Can be called even if the reload is not complete!
     public void StartWeaponReload()
     {
+        reloadSound.Play();
         // still in middle of reloading?
         if (reloadTimer > 0.0f) {
             return;

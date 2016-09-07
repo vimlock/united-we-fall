@@ -77,7 +77,7 @@ public class EnemySpawnerBehaviour : MonoBehaviour {
 		
 
 			if (stage == -1) {
-				if (Time.time >= 12f) {
+				if (Time.timeSinceLevelLoad >= 12f) {
 					stage = 0;
 					timer2 = 0;
 				}
