@@ -4,6 +4,9 @@ using System.Collections;
 public class enemyHitCounter : MonoBehaviour {
 
     public int KillCounter;
+
+	UIBehaviour Behaviour;
+
     public enum bulletType
     {
         RED,
@@ -15,7 +18,7 @@ public class enemyHitCounter : MonoBehaviour {
 
     void Start()
     {
-
+		Behaviour = GameObject.Find("GameController").GetComponent<UIBehaviour>();
     }
 
     // Update is called once per frame
@@ -26,10 +29,6 @@ public class enemyHitCounter : MonoBehaviour {
 
     void OnDestroy()
     {
-        GameObject gameController = GameObject.Find("GameController");
-        if (gameController) {
-            gameController.GetComponent<GameBehaviour>().IncrementKillCount();
-        }
     }
 
     void DestroyObject(bulletType type)
@@ -54,13 +53,20 @@ public class enemyHitCounter : MonoBehaviour {
 
 		if (col.gameObject.tag == "Bullet") {
 			if (type == bulletType.bullet3 && col.gameObject.tag == "Bullet") {
-			
+				GameObject gameController = GameObject.Find("GameController");
+				if (gameController) {
+					gameController.GetComponent<GameBehaviour>().IncrementKillCount();
+				}
 				Destroy (col.gameObject);
 				Destroy (gameObject);
 				return;
 			}
 			if (type == (bulletType)col.gameObject.GetComponent<BulletBehaviour> ().type) { // If enemy's "weakness" bullet type is same as player's who shot it
 				DestroyObject (type);
+				GameObject gameController = GameObject.Find("GameController");
+				if (gameController) {
+					gameController.GetComponent<GameBehaviour>().IncrementKillCount();
+				}
 				Destroy (col.gameObject);
 				return;
 			}
@@ -72,6 +78,7 @@ public class enemyHitCounter : MonoBehaviour {
 
 		}
 		if (col.gameObject.tag == "DangerZone") {
+			Behaviour.GameOver.enabled = true;
 			Destroy (gameObject);
 		}
      
